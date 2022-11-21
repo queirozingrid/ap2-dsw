@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Produtos catalogados</title>
+</h:head>
+<h:body>
+	<f:event listener="#{produtoBean.listar}" type="preRenderView" />
+	<p:growl id="msgGlobal" life="5000"/>
+	
+	<h:form id="form">
+	<p:growl id="messages" showDetail="true" />
+		<p:dataTable id="tabela" widgetVar="tabela" value="#{produtoBean.produtos}"
+				 var="produto" selectionMode="single"
+				 selection="#{produtoBean.produto}" rowKey="#{produto.id}"
+				 emptyMessage="Nenhum registro encontrado">
+
+				<p:column headerText="Produto">
+					<p:outputLabel value="#{produto.descricao}"/>
+				</p:column>
+				<p:column headerText="Data de validade">
+					<p:outputLabel value="#{produto.dataDeValidade}"/>
+				</p:column>
+				<p:column headerText="Preço">
+					<p:outputLabel value="#{produto.preco}"/>
+				</p:column>
+		
+		<p:ajax event="rowSelect" update=":form:detalheProduto" oncomplete="PF('produtoDialog').show()"/>
+
+		</p:dataTable>
+		
+		
+		<p:dialog header="Detalhes do Produto" widgetVar="produtoDialog" modal="true" showEffect="fade" hideEffect="fade"
+              resizable="false">
+			<p:outputPanel id="detalheProduto" style="text-align:center;">
+	            <p:panelGrid columns="2" rendered="#{not empty produtoBean.produto}"
+	                         columnClasses="label,value">
+	                <p:outputLabel value="Descrição"/>
+	                <p:outputLabel value="#{produtoBean.produto.descricao}"/>
+	                
+	                <p:outputLabel value="Data de validade"/>
+	                <p:outputLabel value="#{produtoBean.produto.dataDeValidade}"/>
+	                
+	                <p:outputLabel value="Preço"/>
+	                <p:outputLabel value="#{produtoBean.produto.preco}"/>
+	                
+	                <p:commandButton id="delete-products-button" value="Remover"
+		                    icon="pi pi-trash"
+		                    styleClass="ui-button-danger" action="#{produtoBean.remover}"
+		                    update="form:messages"
+		                    oncomplete="PF('produtoDialog').hide()">
+			        </p:commandButton>
+			        <p:commandButton id="cancel-button" value="Cancelar"
+			                    styleClass="ui-button-cancel" oncomplete="PF('produtoDialog').hide()">
+			        </p:commandButton>
+	         	</p:panelGrid>
+	        </p:outputPanel>
+        </p:dialog>
+        
+        
+	</h:form>
+</h:body>
+</html>
