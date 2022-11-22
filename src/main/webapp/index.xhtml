@@ -9,21 +9,42 @@
 	<title>Cadastrar produto</title>
 </h:head>
 <h:body>
-		<div class="div-container">
-			<p:outputLabel value="Cadastrar produto"/>
+<style>
+	body {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+		<div class="div-container" style="margin-bottom: 20px;">
+			<p:outputPanel style="text-align:center"><h1>Cadastrar Produto</h1></p:outputPanel>
 			<h:form id="form">
-				<p:outputLabel value="Descrição"/>
-				<p:inputText  value="#{produtoBean.produto.descricao}"/>
-				
-				<p:outputLabel value="Data de validade"/>
-				<p:datePicker id="month" view="month" value="#{produtoBean.produto.dataDeValidade}" pattern="MM/yyyy" yearNavigator="true"/>				
-				
-				<p:outputLabel value="Preço"/>
-				<p:inputText value="#{produtoBean.produto.preco}"/>
-				
-				<p:commandButton value="salvar" action="#{produtoBean.salvar}"/>
+			<p:growl id="messages" showDetail="true" />
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Descrição"/>
+					<p:inputText  value="#{produtoBean.produto.descricao}"
+								  required="true"
+								  requiredMessage="Este campo é obrigatório"/>
+					
+					<p:outputLabel value="Data de validade"/>
+					<p:datePicker id="month" view="month" value="#{produtoBean.produto.dataDeValidade}" pattern="MM/yyyy" yearNavigator="true"
+								  required="true"
+								  requiredMessage="Este campo é obrigatório"/>				
+					
+					<p:outputLabel value="Preço"/>
+					<p:inputNumber value="#{produtoBean.produto.preco}" minValue="0"
+								 required="true"
+								 requiredMessage="Este campo é obrigatório"/>
+					
+					<p:commandButton value="salvar" action="#{produtoBean.salvar}"
+									 icon="pi pi-check"
+									 update="form:messages"/>
+					<p:button styleClass="ui-button-warning" value="Produtos catalogados" href="pages/listagem.xhtml"/>
+				</p:panelGrid>
 			</h:form>
-			<a href="pages/listagem.xhtml"><p:button value="Produtos catalogados"/></a>
 		</div>
 </h:body>
 </html>

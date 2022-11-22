@@ -25,8 +25,15 @@ public class ProdutoBean {
 	}
 	
 	public void remover() {
-		System.out.println("desc " + produto.getDescricao());
-		JSFUtil.mensagemSucesso("Produto removido com sucesso");
+		ProdutoDAO.remover(produto);
+		listar();
+	}
+	
+	public void encontrarMaiorId() {
+		produto = ProdutoDAO.encontrarMaiorId();
+		JSFUtil.mensagemSucesso("Produto " + produto.getId() + " :" + produto.getDescricao()
+							  + "Data de validade: " + produto.getDataDeValidade()
+							  + "Preço: " + produto.getPreco());
 	}
 
 	public ArrayList<Produto> getProdutos() {
